@@ -1,0 +1,34 @@
+[
+	{
+		"user_id": "583c3ac3f38e84297c002546",
+		"email": "test@test.com",
+		"name": "Test",
+		"dob": "2016-11-28T14:10:11.338Z",
+		"bio": "tbd",
+		"password": ""
+	},
+	{
+		"user_id": "583c5484cb79a5fe593425a9",
+		"email": "test1@test.com",
+		"name": "Test 1",
+		"dob": "2016-11-28T16:00:04.209Z",
+		"bio": "tbd",
+		"password": ""
+	},
+	{
+		"user_id": "583c57672c7686377d2f66c9",
+		"email": "aaa@aaa.com",
+		"name": "Aaa",
+		"dob": "2016-11-28T16:12:23.777Z",
+		"bio": "tbd",
+		"password": ""
+	},
+	{
+		"user_id": "5840b954da0529cd293d76fe",
+		"email": "a@a.com",
+		"name": "A",
+		"dob": "2016-12-01T23:59:16.473Z",
+		"bio": "tbd",
+		"password": ""
+	}
+]
