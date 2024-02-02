@@ -5,13 +5,7 @@ const {
 	USER_NOT_FOUND,
 	USER_ALREADY_EXISTS,
 } = require('../db/index.ts');
-
-// const VALID_LOGIN = require('../constants/index.ts');
-// console.log(dbConn);
-
-// const VALID_LOGIN = 'VALID_LOGIN';
-// const INVALID_PASSWORD = 'INVALID_PASSWORD';
-// const USER_NOT_FOUND = 'USER_NOT_FOUND';
+const Hashes = require('jshashes');
 
 const getByEmail = async (email, tableName = 'users') => {
 	const queryStr = `SELECT * FROM ${tableName} WHERE email='${email}'`;
@@ -21,8 +15,6 @@ const getByEmail = async (email, tableName = 'users') => {
 		console.log(result);
 	});
 };
-
-// console.log(getByEmail('person1@mail.com'));
 
 const validateRegister = async (email, name, password, response) => {
 	console.log(email);
@@ -36,13 +28,19 @@ const validateRegister = async (email, name, password, response) => {
 			return;
 		}
 		console.log('should bsuccess ');
-		const insertQry = `INSERT INTO users SET name= '${name}', email= '${email}', password='${password}'`;
-		dbConn.query(insertQry, function (err, result, _) {
-			console.log(result);
-			if (err) throw err;
-			console.log('should bsuccess ');
-			response.status(201).send();
-		});
+		try {
+			const hashedPass = new Hashes.SHA1().b64(password);
+			console.log('transform', password, hashedPass);
+			const insertQry = `INSERT INTO users SET name= '${name}', email= '${email}', password='${hashedPass}'`;
+			console.log(insertQry);
+			dbConn.query(insertQry, function (err, _, _) {
+				if (err) throw err;
+				console.log('should bsuccess ');
+				response.status(201).send();
+			});
+		} catch (err) {
+			throw err;
+		}
 	});
 };
 
@@ -56,11 +54,10 @@ const validateLogin = async (response, email, password) => {
 
 		if (result.length === 0) {
 			console.log('send back-->', USER_NOT_FOUND);
-			console.log(result);
 			response.status(401).send(USER_NOT_FOUND);
 		} else {
-			if (result[0].password === password) {
-				console.log('option B valid');
+			const hashedPass = new Hashes.SHA1().b64(password);
+			if (result[0].password === hashedPass) {
 				const newQry = `SELECT * FROM users WHERE email='${email}'`;
 				dbConn.query(newQry, function (err, res, _) {
 					if (err) throw err;
@@ -69,8 +66,6 @@ const validateLogin = async (response, email, password) => {
 					response.json(data);
 				});
 			} else {
-				console.log('returning C invalid');
-				// console.log(result[0].password, password);
 				response.status(401).send(INVALID_PASSWORD);
 			}
 		}
