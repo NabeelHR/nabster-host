@@ -20,7 +20,7 @@ const PORT = 8080;
 
 app.get('/', (req, res) => {
 	console.log('got reyeststst');
-	res = { message: 'hello from the nice side', user: user };
+	res = { message: 'hello from the nice side' };
 
 	res.json();
 });
