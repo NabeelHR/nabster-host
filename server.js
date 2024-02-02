@@ -1,20 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const bcrypt = require('bcrypt');
-// const registration =  require("./")
-// const interfaces = require('./types/interfaces.ts');
-const dbcon = require('./db/mySqlConn.ts');
 const {
 	validateLogin,
 	validateRegister,
 	uploadImgData,
 	retrieveImgData,
 } = require('./db/queries.ts');
-// const { uploaaImg } = require('./storage/firebase.ts');
-// const multer = require('multer');
-
-// const DEMO = require('./db/cons.ts');
 
 app.use(express.json());
 subs = [];
@@ -35,7 +27,11 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
 	console.log(req.body.email);
-	validateLogin(res, req.body.email, req.body.password);
+	try {
+		validateLogin(res, req.body.email, req.body.password);
+	} catch (error) {
+		res.status(401).send('login failed');
+	}
 });
 
 app.post('/register', async (req, res) => {
