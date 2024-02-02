@@ -9,4 +9,3 @@ module.exports = {
 	USER_NOT_FOUND,
 	USER_ALREADY_EXISTS,
 };
-// module.exports = VALID_LOGIN;
